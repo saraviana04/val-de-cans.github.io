@@ -78,11 +78,23 @@ function App() {
             </div>
             <nav className="flex gap-6 items-center text-sm font-semibold uppercase">
               <Link to="/" className="hover:text-yellow-400">Home</Link>
-              <Link to="/sobre" className="hover:text-yellow-400">SOBRE NÓS</Link> {/* ✅ Corrigido aqui */}
+              <Link to="/sobre" className="hover:text-yellow-400">SOBRE NÓS</Link>
               <Link to="/titulos" className="hover:text-yellow-400">TÍTULOS</Link>
               <Link to="/atletas" className="hover:text-yellow-400">ATLETAS</Link>
               <Link to="/blog" className="hover:text-yellow-400">BLOG</Link>
-              <a href="#" className="hover:text-yellow-400">CONTATO</a>
+
+              {/* CONTATO antes era <a href="#">, agora é um botão estilizado */}
+              <button
+                type="button"
+                className="hover:text-yellow-400 focus:outline-none bg-transparent"
+                onClick={() => {
+                  // se quiser rolar até o footer ou abrir modal depois
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                }}
+              >
+                CONTATO
+              </button>
+
               <Link
                 to="/junte-se"
                 className="ml-4 bg-yellow-400 text-green-900 font-bold px-4 py-1 rounded hover:bg-yellow-300"
@@ -90,7 +102,6 @@ function App() {
                 Junte-se à equipe
               </Link>
             </nav>
-
           </header>
 
           {/* Rotas */}
