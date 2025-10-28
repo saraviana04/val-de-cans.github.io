@@ -6,7 +6,7 @@ const informativos = {
     titulo: "Torneio Conegunes",
     imagem: "/JogoseEventos/eventos01.jpg",
     destaques: [
-      "Em breve vamos liberar todos os detalhes do Torneio Conegunes.",
+      "Em breve vamos liberar todos os detalhes do Torneio Conegunes..",
       "Acompanhe as atualizações nas redes sociais para saber sobre a tabela completa, horários dos jogos e regulamento.",
     ],
     complemento:
