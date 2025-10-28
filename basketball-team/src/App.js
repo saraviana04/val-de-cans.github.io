@@ -14,7 +14,7 @@ import JunteSeEquipe from "./JunteSeEquipe";
 
 function Home() {
   return (
-    <main className="flex flex-col md:flex-row items-center justify-center flex-1 px-10 py-20 text-white">
+    <main className="flex flex-col md:flex-row items-center justify-center flex-1 px-6 sm:px-8 md:px-10 py-16 md:py-20 text-white">
       <div className="max-w-lg mb-10 md:mb-0 text-left">
         <h1 className="text-4xl font-extrabold mb-4 text-green-100">
           <TypeAnimation
@@ -71,22 +71,22 @@ function App() {
         {/* Conteúdo */}
         <div className="relative z-20 flex flex-col flex-1 min-h-screen">
           {/* HEADER */}
-          <header className="flex justify-between items-center px-10 py-4 bg-green-900/90 sticky top-0 z-30">
+          <header className="flex flex-wrap gap-y-3 justify-between items-center px-6 md:px-10 py-4 bg-green-900/90 sticky top-0 z-30">
             <div className="flex items-center gap-2">
               <img src="/logo.png" alt="Logo" className="h-10" />
               <span className="font-bold text-xl">val-de-cans Basquetebol</span>
             </div>
-            <nav className="flex gap-6 items-center text-sm font-semibold uppercase">
-              <Link to="/" className="hover:text-yellow-400">Home</Link>
-              <Link to="/sobre" className="hover:text-yellow-400">SOBRE NÓS</Link>
-              <Link to="/titulos" className="hover:text-yellow-400">TÍTULOS</Link>
-              <Link to="/atletas" className="hover:text-yellow-400">ATLETAS</Link>
-              <Link to="/blog" className="hover:text-yellow-400">BLOG</Link>
+            <nav className="flex flex-wrap justify-end gap-3 sm:gap-6 items-center text-xs sm:text-sm font-semibold uppercase">
+              <Link to="/" className="hover:text-yellow-400 whitespace-nowrap">Home</Link>
+              <Link to="/sobre" className="hover:text-yellow-400 whitespace-nowrap">SOBRE NÓS</Link>
+              <Link to="/titulos" className="hover:text-yellow-400 whitespace-nowrap">TÍTULOS</Link>
+              <Link to="/atletas" className="hover:text-yellow-400 whitespace-nowrap">ATLETAS</Link>
+              <Link to="/blog" className="hover:text-yellow-400 whitespace-nowrap">BLOG</Link>
 
               {/* CONTATO antes era <a href="#">, agora é um botão estilizado */}
               <button
                 type="button"
-                className="hover:text-yellow-400 focus:outline-none bg-transparent"
+                className="hover:text-yellow-400 focus:outline-none bg-transparent whitespace-nowrap"
                 onClick={() => {
                   // se quiser rolar até o footer ou abrir modal depois
                   window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
@@ -97,7 +97,7 @@ function App() {
 
               <Link
                 to="/junte-se"
-                className="ml-4 bg-yellow-400 text-green-900 font-bold px-4 py-1 rounded hover:bg-yellow-300"
+                className="sm:ml-4 bg-yellow-400 text-green-900 font-bold px-4 py-1 rounded hover:bg-yellow-300 whitespace-nowrap text-xs sm:text-sm"
               >
                 Junte-se à equipe
               </Link>
