@@ -2,8 +2,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Atletas from "./Atletas";
-import Blog from "./Blog";
-import Post from "./Post";
+import BlogPage from "./features/blog/BlogPage";
+import PostPage from "./features/blog/PostPage";
 import Footer from "./Footer";
 import { TypeAnimation } from "react-type-animation";
 import JogoseEventos from "./JogoseEventos";
@@ -110,8 +110,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/atletas" element={<Atletas />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<Post />} />
+              <Route path="/blog" element={<BlogPage />} />
+              <Route path="/blog/:id" element={<PostPage />} />
               <Route path="/jogoseeventos" element={<JogoseEventos />} />
               <Route path="/sobre" element={<SobreNos />} />
               <Route path="/evento/:id" element={<EventoDetalhe />} />
