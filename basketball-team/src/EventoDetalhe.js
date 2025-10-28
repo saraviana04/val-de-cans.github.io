@@ -11,12 +11,12 @@ import { Link } from "react-router-dom";
 
 // ======== DADOS DE EXEMPLO ========
 const times = [
-  { pos: 1, nome: "Jurássicos", jogos: 4, v: 4, e: 0, d: 0, gp: 246, gc: 201, ultimos: ["V", "V", "V", "V"] },
-  { pos: 2, nome: "Bessa Manutenções", jogos: 4, v: 3, e: 0, d: 1, gp: 232, gc: 215, ultimos: ["V", "V", "D", "V"] },
-  { pos: 3, nome: "Real Belém", jogos: 4, v: 3, e: 0, d: 1, gp: 221, gc: 207, ultimos: ["V", "V", "V", "D"] },
-  { pos: 4, nome: "Val-de-Cans", jogos: 4, v: 2, e: 0, d: 2, gp: 215, gc: 214, ultimos: ["D", "V", "V", "D"] },
-  { pos: 5, nome: "Jump Basketball", jogos: 4, v: 1, e: 0, d: 3, gp: 208, gc: 221, ultimos: ["D", "D", "V", "D"] },
-  { pos: 6, nome: "All Star Cansado", jogos: 4, v: 0, e: 0, d: 4, gp: 197, gc: 241, ultimos: ["D", "D", "D", "D"] },
+  { pos: 1, nome: "Jurássicos", jogos: 4, v: 4, d: 0, gp: 246, gc: 201, ultimos: ["V", "V", "V", "x"] },
+  { pos: 2, nome: "Bessa Manutenções", jogos: 4, v: 3, d: 1, gp: 232, gc: 215, ultimos: ["V", "V", "D", "x"] },
+  { pos: 3, nome: "Real Belém", jogos: 4, v: 3, d: 1, gp: 221, gc: 207, ultimos: ["V", "V", "V", "x"] },
+  { pos: 4, nome: "Val-de-Cans", jogos: 3, v: 1, d: 2, gp: 215, gc: 214, ultimos: ["D", "D", "V", "x"] },
+  { pos: 5, nome: "Jump Basketball", jogos: 4, v: 1, d: 3, gp: 208, gc: 221, ultimos: ["D", "D", "V", "x"] },
+  { pos: 6, nome: "All Star Cansado", jogos: 4, v: 0, d: 4, gp: 197, gc: 241, ultimos: ["D", "D", "D", "x"] },
 ];
 
 const rodadas = [
@@ -38,18 +38,18 @@ const rodadas = [
   },
   {
     numero: 3,
-    dataTitulo: "11/10 • Sábado",
+    dataTitulo: "26/10 • Sábado",
     jogos: [
-      { horario: "16:00", local: "Sede Paysandu", casa: "Real Belém", fora: "Jurássicos", status: "A definir" },
-      { horario: "17:30", local: "Sede Paysandu", casa: "Val-de-Cans", fora: "Jump Basketball", status: "A definir" },
+      { horario: "16:00", local: "Sede Paysandu", casa: "Jump Basketball", fora: "Jurássicos", status: "A definir" },
+      { horario: "17:30", local: "Sede Paysandu", casa: "Val-de-Cans", fora: "Real Belém", status: "Encerrado", placar: "62–32" },
     ],
   },
 ];
 
 // ======== FUNÇÕES AUXILIARES ========
-function pct(v, e, j) {
+function pct(v, j) {
   if (!j) return 0;
-  return Math.round(((v * 3 + e) / (j * 3)) * 100);
+  return Math.round((v / j) * 100);
 }
 function sg(gp, gc) {
   return gp - gc;
@@ -79,17 +79,24 @@ function Header({ title }) {
 function TabelaClassificacao({ dados }) {
   const linhas = useMemo(() => {
     return dados
-      .map((t) => ({ ...t, pts: t.v * 3 + t.e, sg: sg(t.gp, t.gc), pct: pct(t.v, t.e, t.jogos) }))
+      .map((t) => ({
+        ...t,
+        pts: t.v * 2, // 2 pts por vitória
+        sg: t.gp - t.gc,
+        pct: Math.round((t.v / t.jogos) * 100),
+      }))
       .sort((a, b) => b.pts - a.pts || b.sg - a.sg || b.gp - a.gp);
   }, [dados]);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-zinc-200 overflow-hidden">
+      {/* Cabeçalho */}
       <div className="px-5 py-4 border-b border-zinc-200 flex items-center justify-between">
         <h3 className="font-semibold">TABELA</h3>
         <span className="text-xs text-zinc-500">Master 40+</span>
       </div>
 
+      {/* Tabela */}
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm">
           <thead className="bg-zinc-50 text-zinc-500">
@@ -98,18 +105,21 @@ function TabelaClassificacao({ dados }) {
               <th className="px-4 py-3">Classificação</th>
               <th className="px-2 py-3 text-center">J</th>
               <th className="px-2 py-3 text-center">V</th>
-              <th className="px-2 py-3 text-center">E</th>
               <th className="px-2 py-3 text-center">D</th>
               <th className="px-2 py-3 text-center">GP</th>
               <th className="px-2 py-3 text-center">GC</th>
               <th className="px-2 py-3 text-center">SG</th>
               <th className="px-2 py-3 text-center">%</th>
-              <th className="px-4 py-3 text-right">ÚLT. JOGOS</th>
+              <th className="px-4 py-3 text-right pr-6">ÚLT. JOGOS</th>
             </tr>
           </thead>
+
           <tbody className="text-zinc-800">
             {linhas.map((t, i) => (
-              <tr key={t.nome} className={i % 2 === 0 ? "bg-white" : "bg-zinc-50"}>
+              <tr
+                key={t.nome}
+                className={i % 2 === 0 ? "bg-white" : "bg-zinc-50"}
+              >
                 <td className="px-4 py-3 font-medium text-zinc-600">{t.pos}</td>
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
@@ -119,17 +129,30 @@ function TabelaClassificacao({ dados }) {
                     <span className="font-medium text-zinc-800">{t.nome}</span>
                   </div>
                 </td>
-                <td className="px-2 py-3 text-center text-zinc-800">{t.jogos}</td>
-                <td className="px-2 py-3 text-center text-zinc-800">{t.v}</td>
-                <td className="px-2 py-3 text-center text-zinc-800">{t.e}</td>
-                <td className="px-2 py-3 text-center text-zinc-800">{t.d}</td>
-                <td className="px-2 py-3 text-center text-zinc-800">{t.gp}</td>
-                <td className="px-2 py-3 text-center text-zinc-800">{t.gc}</td>
-                <td className="px-2 py-3 text-center text-zinc-800">{t.sg}</td>
-                <td className="px-2 py-3 text-center text-zinc-800">{t.pct}</td>
-                <td className="px-4 py-3">
-                  <div className="flex justify-end">
-                    <UltimosJogos sequencia={t.ultimos} />
+
+                <td className="px-2 py-3 text-center">{t.jogos}</td>
+                <td className="px-2 py-3 text-center">{t.v}</td>
+                <td className="px-2 py-3 text-center">{t.d}</td>
+                <td className="px-2 py-3 text-center">{t.gp}</td>
+                <td className="px-2 py-3 text-center">{t.gc}</td>
+                <td className="px-2 py-3 text-center">{t.sg}</td>
+                <td className="px-2 py-3 text-center">{t.pct}</td>
+
+                {/* Ajuste de alinhamento na última coluna */}
+                <td className="py-3 pr-6 text-right">
+                  <div className="inline-flex gap-1 justify-end">
+                    {t.ultimos.map((r, i) => (
+                      <span
+                        key={i}
+                        className={`inline-block w-2 h-2 rounded-full ${
+                          r === "V"
+                            ? "bg-green-500"
+                            : r === "D"
+                            ? "bg-red-500"
+                            : "bg-gray-400"
+                        }`}
+                      />
+                    ))}
                   </div>
                 </td>
               </tr>
@@ -140,6 +163,7 @@ function TabelaClassificacao({ dados }) {
     </div>
   );
 }
+
 
 // ======== CARD DE JOGO ========
 function CardJogo({ jogo }) {
@@ -161,7 +185,6 @@ function CardJogo({ jogo }) {
           <span className="px-2 py-0.5 rounded-md bg-zinc-100 font-semibold text-zinc-700">{jogo.placar}</span>
         )}
       </div>
-
     </div>
   );
 }
