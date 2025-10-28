@@ -46,27 +46,16 @@ const rodadas = [
   },
 ];
 
-// ======== FUNÇÕES AUXILIARES ========
-function pct(v, j) {
-  if (!j) return 0;
-  return Math.round((v / j) * 100);
-}
-function sg(gp, gc) {
-  return gp - gc;
-}
+// ======== COMPONENTES DE APOIO ========
+
+// bolinha colorida pros últimos jogos
 function FormPill({ r }) {
-  const color = r === "V" ? "bg-green-500" : r === "E" ? "bg-gray-400" : "bg-red-500";
+  // V verde, D vermelho, x cinza
+  const color =
+    r === "V" ? "bg-green-500" : r === "D" ? "bg-red-500" : "bg-gray-400";
   return <span className={`inline-block w-2 h-2 rounded-full ${color}`} />;
 }
-function UltimosJogos({ sequencia }) {
-  return (
-    <div className="flex items-center gap-1">
-      {sequencia.map((r, i) => (
-        <FormPill key={i} r={r} />
-      ))}
-    </div>
-  );
-}
+
 function Header({ title }) {
   return (
     <div className="flex items-center justify-between mb-4">
@@ -79,24 +68,25 @@ function Header({ title }) {
 function TabelaClassificacao({ dados }) {
   const linhas = useMemo(() => {
     return dados
-      .map((t) => ({
-        ...t,
-        pts: t.v * 2, // 2 pts por vitória
-        sg: t.gp - t.gc,
-        pct: Math.round((t.v / t.jogos) * 100),
-      }))
+      .map((t) => {
+        const pts = t.v * 2; // 2 pts por vitória
+        const sg = t.gp - t.gc;
+        const pct = t.jogos ? Math.round((t.v / t.jogos) * 100) : 0;
+
+        return { ...t, pts, sg, pct };
+      })
+      // critério de desempate: pontos > saldo > pontos marcados
       .sort((a, b) => b.pts - a.pts || b.sg - a.sg || b.gp - a.gp);
   }, [dados]);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-zinc-200 overflow-hidden">
-      {/* Cabeçalho */}
+      {/* topo da tabela */}
       <div className="px-5 py-4 border-b border-zinc-200 flex items-center justify-between">
         <h3 className="font-semibold">TABELA</h3>
         <span className="text-xs text-zinc-500">Master 40+</span>
       </div>
 
-      {/* Tabela */}
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm">
           <thead className="bg-zinc-50 text-zinc-500">
@@ -110,6 +100,7 @@ function TabelaClassificacao({ dados }) {
               <th className="px-2 py-3 text-center">GC</th>
               <th className="px-2 py-3 text-center">SG</th>
               <th className="px-2 py-3 text-center">%</th>
+              {/* cabeçalho da última coluna alinhado à direita */}
               <th className="px-4 py-3 text-right pr-6">ÚLT. JOGOS</th>
             </tr>
           </thead>
@@ -120,13 +111,19 @@ function TabelaClassificacao({ dados }) {
                 key={t.nome}
                 className={i % 2 === 0 ? "bg-white" : "bg-zinc-50"}
               >
-                <td className="px-4 py-3 font-medium text-zinc-600">{t.pos}</td>
+                <td className="px-4 py-3 font-medium text-zinc-600">
+                  {t.pos}
+                </td>
+
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-3">
+                    {/* bolinha de pontos */}
                     <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-700">
                       {t.pts}
                     </span>
-                    <span className="font-medium text-zinc-800">{t.nome}</span>
+                    <span className="font-medium text-zinc-800">
+                      {t.nome}
+                    </span>
                   </div>
                 </td>
 
@@ -138,22 +135,13 @@ function TabelaClassificacao({ dados }) {
                 <td className="px-2 py-3 text-center">{t.sg}</td>
                 <td className="px-2 py-3 text-center">{t.pct}</td>
 
-                {/* Ajuste de alinhamento na última coluna */}
-                <td className="py-3 pr-6 text-right">
-                  <div className="inline-flex gap-1 justify-end">
-                    {t.ultimos.map((r, i) => (
-                      <span
-                        key={i}
-                        className={`inline-block w-2 h-2 rounded-full ${
-                          r === "V"
-                            ? "bg-green-500"
-                            : r === "D"
-                            ? "bg-red-500"
-                            : "bg-gray-400"
-                        }`}
-                      />
+                {/* última coluna: bolinhas dos últimos jogos, alinhadas com header */}
+                <td className="px-4 py-3 text-right pr-6">
+                  <span className="inline-flex gap-1 justify-end">
+                    {t.ultimos.map((r, idx) => (
+                      <FormPill key={idx} r={r} />
                     ))}
-                  </div>
+                  </span>
                 </td>
               </tr>
             ))}
@@ -164,27 +152,35 @@ function TabelaClassificacao({ dados }) {
   );
 }
 
-
 // ======== CARD DE JOGO ========
 function CardJogo({ jogo }) {
   return (
-    <div className="p-4 border border-zinc-200 rounded-xl flex flex-col gap-2">
+    <div className="p-4 border border-zinc-200 rounded-xl flex flex-col gap-2 bg-white">
+      {/* linha com horário, local */}
       <div className="text-xs text-zinc-500">
-        <span className="font-medium text-zinc-700">{jogo.horario}</span> • {jogo.local}
+        <span className="font-medium text-zinc-700">{jogo.horario}</span> •{" "}
+        {jogo.local}
       </div>
 
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex-1 text-right font-semibold text-zinc-800">{jogo.casa}</div>
-        <div className="px-2 text-zinc-500">×</div>
-        <div className="flex-1 font-semibold text-zinc-800">{jogo.fora}</div>
-      </div>
+      {/* times e placar no estilo do print */}
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div className="flex-1 text-right font-semibold text-zinc-800 leading-tight">
+          {jogo.casa}
+        </div>
+        <div className="text-zinc-500">×</div>
+        <div className="flex-1 font-semibold text-zinc-800 leading-tight">
+          {jogo.fora}
+        </div>
 
-      <div className="flex items-center justify-between text-xs text-zinc-600">
-        <span className="italic">{jogo.status}</span>
         {jogo.placar && (
-          <span className="px-2 py-0.5 rounded-md bg-zinc-100 font-semibold text-zinc-700">{jogo.placar}</span>
+          <span className="ml-auto text-xs font-semibold bg-zinc-100 text-zinc-700 px-2 py-1 rounded-md self-start">
+            {jogo.placar}
+          </span>
         )}
       </div>
+
+      {/* status */}
+      <div className="text-xs text-zinc-500 italic">{jogo.status}</div>
     </div>
   );
 }
@@ -203,21 +199,50 @@ function JogosRodadas({ dados }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-zinc-200 overflow-hidden">
+      {/* topo jogos */}
       <div className="px-5 py-4 border-b border-zinc-200 flex items-center justify-between">
         <h3 className="font-semibold">JOGOS</h3>
         <div className="flex items-center gap-2">
-          <button onClick={prev} aria-label="Rodada anterior" className="w-8 h-8 rounded-full border border-zinc-200 grid place-content-center hover:bg-zinc-50 text-zinc-600">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <button
+            onClick={prev}
+            aria-label="Rodada anterior"
+            className="w-8 h-8 rounded-full border border-zinc-200 grid place-content-center hover:bg-zinc-50 text-zinc-600"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M15 6L9 12L15 18"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
-          <div className="text-sm font-semibold text-zinc-800">{rodada.numero}ª RODADA</div>
-          <button onClick={next} aria-label="Próxima rodada" className="w-8 h-8 rounded-full border border-zinc-200 grid place-content-center hover:bg-zinc-50 text-zinc-600">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <div className="text-sm font-semibold text-zinc-800">
+            {rodada.numero}ª RODADA
+          </div>
+          <button
+            onClick={next}
+            aria-label="Próxima rodada"
+            className="w-8 h-8 rounded-full border border-zinc-200 grid place-content-center hover:bg-zinc-50 text-zinc-600"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M9 6L15 12L9 18"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </div>
 
+      {/* corpo jogos */}
       <div className="p-5">
         <div className="text-xs text-zinc-500 mb-3">{rodada.dataTitulo}</div>
+
         <div className="grid gap-3">
           {rodada.jogos.map((j, idx) => (
             <CardJogo key={idx} jogo={j} />

@@ -1,23 +1,89 @@
 const posts = [
   {
     id: 1,
-    title: "Veja o ranking dos melhores agentes livres da NBA",
-    image: "/Blog/blog01.jpg",
+    title: "Veja Jokic faz mais um triplo-duplo, Murray destroi no terceiro quarto, e Nuggets batem os Timberwolves",
+    image: "/Blog/1.png",
     comments: 7,
-    excerpt: "Listamos atletas que devem se movimentar no mercado da offseason.",
-    content:
-      "Confira as últimas movimentações e rumores de trocas na NBA, incluindo projeções sobre possíveis destinos para os principais agentes livres desta offseason.",
-  },
+    full: `
+          <article class="text-gray-800 max-w-3xl mx-auto px-4 py-6 space-y-6">
+
+          <header>
+              <div class="text-sm text-gray-600 mt-2">
+              <p><strong>Data:</strong> 27/10/2025</p>
+              </div>
+          </header>
+
+            <!-- Placar -->
+            <section class="bg-green-700 text-white rounded-xl p-5 text-center shadow-md">
+              <p class="uppercase text-sm tracking-wide text-green-100 font-semibold">
+                Placar Final
+              </p>
+              <p class="text-4xl font-extrabold mt-1">
+                Nuggets <span class="text-yellow-300">127</span> x <span class="text-yellow-300">114</span> Timberwolves
+              </p>
+
+            </section>
+
+            <section class="space-y-4 leading-relaxed text-base">
+              <p>
+                Nikola Jokic anotou mais um triplo-duplo, atingindo a marca em todos os jogos do ano.
+                 Jamal Murray também foi destaque com 43 pontos, sendo 23 apenas no terceiro período, um recorde na carreira.
+              </p>
+
+              <p>
+                Os Timberwolves sofreram sem Anthony Edwards, que deve ficar fora por pelo menos duas semanas, com uma lesão na coxa.
+                Assim, coube a Mike Conley e Donte DiVincenzo a missão de iniciar os ataques de Minnesota,
+                além de contarem com as jogadas em transição de McDaniels. O ataque até funcionou em determinado momento, mas faltou repertório na reta final..
+              </p>
+
+            </section>
+          </article>
+
+        `,
+
+      },
   {
     id: 2,
-    title: "Pacers desafia a história para vencer Knicks nos playoffs da NBA",
-    image: "/Blog/blog02.jpg",
+    title: "Mitchell brilha, e defesa dos Cavs não dá a menor chance para os Pistons",
+    image: "/Blog/2.png",
     comments: 5,
-    excerpt:
-      "Indiana segue surpreendendo a conferência leste com uma campanha consistente rumo às finais.",
-    content:
-      "Pacers desafia a história para vencer Knicks nos playoffs da NBA. A equipe de Indiana mantém o embalo com atuações coletivas sólidas e defesa agressiva.",
-  },
+    full: `
+              <article class="text-gray-800 max-w-3xl mx-auto px-4 py-6 space-y-6">
+              <header>
+                   <div class="text-sm text-gray-600 mt-2">
+                   <p><strong>Data:</strong> 27/10/2025</p>
+                   </div>
+              </header>
+
+                <!-- Placar -->
+                <section class="bg-green-700 text-white rounded-xl p-5 text-center shadow-md">
+                  <p class="uppercase text-sm tracking-wide text-green-100 font-semibold">
+                    Placar Final
+                  </p>
+                  <p class="text-4xl font-extrabold mt-1">
+                    Cleveland Cavaliers <span class="text-yellow-300">116</span> x <span class="text-yellow-300">95</span> Detroit Pistons
+                  </p>
+
+                </section>
+
+                <section class="space-y-4 leading-relaxed text-base">
+                  <p>
+                    Atropelo em plena segunda-feira de NBA. O
+                     Cleveland Cavaliers não tomou conhecimento do Detroit Pistons e venceu por 95 x 116, mesmo jogando fora de casa..
+                  </p>
+
+                  <p>
+                    Apesar de se tratar de dois dos melhores times da Conferência Leste,
+                     os Cavs demonstraram estar em um patamar acima, ainda que desfalcados de Lonzo Ball, Max Strus
+                      e Darius Garland. Os Pistons, embora também sem Jaden Ivey e Caris LeVert, não conseguiram superar o garrafão congestionado de Cleveland, nem ter um bom aproveitamento nos chutes longos.
+                  </p>
+
+                </section>
+              </article>
+
+            `,
+
+          },
   {
     id: 3,
     title:
