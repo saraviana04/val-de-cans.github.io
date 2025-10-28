@@ -40,7 +40,7 @@ const posts = [
         <header>
             <div class="text-sm text-gray-600 mt-2">
             <p><strong>Data:</strong> 26/10/2025</p>
-            <p><strong>Local:</strong> Ginásio Moura Cavalcante</p>
+            <p><strong>Local:</strong> Ginásio Sede Paysandu</p>
             <p><strong>Competição:</strong> Campeonato Master 40+</p>
             <p><strong>Rodada:</strong> 3ª rodada</p>
           </div>
