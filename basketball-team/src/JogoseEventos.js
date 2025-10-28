@@ -3,22 +3,28 @@ import { useNavigate } from "react-router-dom";
 
 const eventos = [
   {
+    id: "torneio-conegunes",
     nome: "Torneio Conegunes",
     data: "15 de Junho, 2025",
     local: "Quadra UFPA",
     imagem: "/JogoseEventos/eventos01.jpg",
+    infoRoute: "/evento-info/torneio-conegunes",
   },
   {
+    id: "torneio-master",
     nome: "Torneio Master",
     data: "Temporada 2025/26 da LBB",
     local: "Quadra Escola superior de educação Fisica",
     imagem: "/JogoseEventos/torneioMaster.jpeg",
+    detailRoute: "/evento/1",
   },
   {
+    id: "lbb-inscricoes",
     nome: "LBB abrirá inscrições para todas as categorias.",
     data: "De 10 de Junho a 10 de Julho de 2025",
     local: "A definir",
     imagem: "/JogoseEventos/eventos01.jpg",
+    infoRoute: "/evento-info/lbb-inscricoes",
   },
 ];
 
@@ -26,7 +32,16 @@ export default function JogoseEventos() {
   const navigate = useNavigate();
 
   const handleVerDetalhes = (index) => {
-    navigate(`/evento/${index}`);
+    const evento = eventos[index];
+
+    if (evento.detailRoute) {
+      navigate(evento.detailRoute);
+      return;
+    }
+
+    if (evento.infoRoute) {
+      navigate(evento.infoRoute);
+    }
   };
 
   return (

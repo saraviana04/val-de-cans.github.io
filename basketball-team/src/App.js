@@ -11,6 +11,7 @@ import SobreNos from "./SobreNos";
 import EventoDetalhe from "./EventoDetalhe";
 import Titulos from "./Titulos";
 import JunteSeEquipe from "./JunteSeEquipe";
+import EventoInformativo from "./EventoInformativo";
 
 function Home() {
   return (
@@ -114,6 +115,7 @@ function App() {
               <Route path="/jogoseeventos" element={<JogoseEventos />} />
               <Route path="/sobre" element={<SobreNos />} />
               <Route path="/evento/:id" element={<EventoDetalhe />} />
+              <Route path="/evento-info/:id" element={<EventoInformativo />} />
               <Route path="/titulos" element={<Titulos />} />
               <Route path="/junte-se" element={<JunteSeEquipe />} />
             </Routes>
